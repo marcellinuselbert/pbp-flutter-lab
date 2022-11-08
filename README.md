@@ -31,6 +31,6 @@ Dalam tugas ini, contohnya adalah variable `_counter` yang valuenya bisa berubah
 4. Tambah floatingActionButton widget di row, sehingga ada 2 floatingActionButton
 5. Buat function yang bisa melakukan decrement pada counter
 6. Bind decrement functionnya pada onPressed props di button decrement dan bind function increment pada onPressed props di button increment
-7. Pada function decrement handle ketika `_counter` < 0 maka tidak bisa decrement, else bisa
+7. Pada function decrement handle ketika `_counter` > 0 maka bisa decrement, else tidak bisa
 8. Kemudian buat widget Text dan tambahkan handler ternary, ketika counter genap maka keluarkan Text Genap, else Text Ganjil
 
