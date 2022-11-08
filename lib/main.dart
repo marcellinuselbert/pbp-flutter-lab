@@ -122,12 +122,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.blue,
                       ),
                     ),
-              // Text((() {
-              //   if (_counter % 2 == 0) {
-              //     return "GENAP";
-              //   }
-              //   return "GANJIL";
-              // })()),
               Text(
                 '$_counter',
                 style: Theme.of(context).textTheme.headline4,
