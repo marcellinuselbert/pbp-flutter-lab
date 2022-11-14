@@ -34,3 +34,30 @@ Dalam tugas ini, contohnya adalah variable `_counter` yang valuenya bisa berubah
 7. Pada function decrement handle ketika `_counter` > 0 maka bisa decrement, else tidak bisa
 8. Kemudian buat widget Text dan tambahkan handler ternary, ketika counter genap maka keluarkan Text Genap, else Text Ganjil
 
+# Assignment 8
+
+## Navigator.push vs Navigator.pushReplacement
+Pada `Navigator.pushReplacement` akan me-replace halaman sekarang dengan halaman baru sedangkan pada `Navigator.push` menambahkan rute lain ke atas tumpukan screen (stack) yang sekarang<br>
+
+## Widgets
+`Card` -> untuk membuat card<br>
+`SizedBox` -> membuat fixed size box<br>
+`TextFormField` -> untuk input field<br>
+`DropdownButtonFormField` -> untuk membuat dropdown yang bisa divalidasi<br>
+`Spacer` -> untuk membuat space pada flexible widget<br>
+
+## Events
+`onPressed` -> event yang terjadi ketika user telah selesai menekan<br>
+`onTap` -> event yang terjadi ketika sesaat setelah klik<br>
+`onChanged` -> event yang terjadi ketika ada perubahan<br>
+## Cara Kerja Navigator
+Navigator menggunakan paradigma `stack` yaitu last in first out. Stack ini digunakan untuk layar. Misalnya push suatu layar maka yang ditampilkan adalah top of stack dari stack layar tersebut.
+
+## Implementasi
+1. Membuat drawer.dart yang berisi widget `Drawer` dengan routing ke counter_7, form, show_budget
+2. Membuat form dengan input berupa String untuk judul, int untuk nominal, String untuk jenis, dan DateField untuk date(demo)
+3. Judul dan nominal menggunakan `TextFormField`, jenis menggunakan `DropdownButtonFormField`, dan DateField menggunakan `showDatePicker`
+4. Setelah itu buat handler yang menerima judul, nominal, jenis, dan date untuk ditambahkan ke static list
+5. buat model `Budget` dan static list pada file terpisah
+6. Iterasi static list yang menyimpan list budget dan tampilkan di card
+
