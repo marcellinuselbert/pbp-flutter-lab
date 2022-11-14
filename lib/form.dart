@@ -14,13 +14,18 @@ class _MyFormPageState extends State<MyFormPage> {
   String _judul = "";
   int? _nominal = 0;
   String? _jenis;
+  DateTime? _dateTime;
   final _controllerJudul = TextEditingController();
   final _controllerNominal = TextEditingController();
 
   void clearText() {
     _controllerJudul.clear();
     _controllerNominal.clear();
-    _jenis = null;
+
+    setState(() {
+      _jenis = null;
+      _dateTime = null;
+    });
   }
 
   @override
@@ -110,6 +115,7 @@ class _MyFormPageState extends State<MyFormPage> {
                   const SizedBox(
                     height: 10, // <-- SEE HERE
                   ),
+
                   SizedBox(
                     width: 120,
                     child: DropdownButtonFormField(
@@ -138,6 +144,28 @@ class _MyFormPageState extends State<MyFormPage> {
                       },
                     ), // <-- SEE HERE
                   ),
+                  const SizedBox(
+                    height: 10, // <-- SEE HERE
+                  ),
+
+                  TextButton(
+                    child: Text(_dateTime == null
+                        ? "Pick a date"
+                        : "${_dateTime!.day}/${_dateTime!.month}/${_dateTime!.year}"),
+                    onPressed: () {
+                      showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2099),
+                      ).then((date) {
+                        //tambahkan setState dan panggil variabel _dateTime.
+                        setState(() {
+                          _dateTime = date;
+                        });
+                      });
+                    },
+                  ),
 
                   // kebawahin button
                   const Spacer(),
@@ -148,11 +176,14 @@ class _MyFormPageState extends State<MyFormPage> {
                         backgroundColor: MaterialStateProperty.all(Colors.blue),
                       ),
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          ListBudget.data
-                              .add(Budget(_judul, _nominal, _jenis!));
-                          _showToast(context);
+                        if (_formKey.currentState!.validate() &&
+                            _dateTime != null) {
+                          ListBudget.data.add(
+                              Budget(_judul, _nominal, _jenis!, _dateTime!));
+                          _showToast(context, false);
                           clearText();
+                        } else {
+                          _showToast(context, true);
                         }
                       },
                       child: const Text(
@@ -166,13 +197,17 @@ class _MyFormPageState extends State<MyFormPage> {
     );
   }
 
-  void _showToast(BuildContext context) {
+  void _showToast(BuildContext context, bool isError) {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        content: const Text('Budget berhasil ditambahkan!'),
+        backgroundColor: isError ? Colors.red : Colors.green,
+        content: Text(isError
+            ? "Kamu belum mengisi dengan lengkap!"
+            : 'Budget berhasil ditambahkan!'),
         action: SnackBarAction(
             label: 'Close',
+            textColor: Colors.white,
             onPressed: () {
               scaffold.hideCurrentSnackBar;
             }),

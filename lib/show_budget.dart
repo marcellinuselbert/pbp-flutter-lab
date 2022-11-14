@@ -22,9 +22,6 @@ class _ShowBudgetState extends State<ShowBudget> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 child: Column(
-                    mainAxisAlignment: ListBudget.data.isNotEmpty
-                        ? MainAxisAlignment.start
-                        : MainAxisAlignment.center,
                     children: ListBudget.data.isNotEmpty
                         ? ListBudget.data
                             .map((budget) => Container(
@@ -51,15 +48,27 @@ class _ShowBudgetState extends State<ShowBudget> {
                                           padding: const EdgeInsets.all(15.0),
                                           child: Column(
                                             children: [
-                                              Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Text(
-                                                    budget.judul,
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 18),
-                                                  )),
+                                              Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      budget.judul,
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 18),
+                                                    ),
+                                                    Text(
+                                                      "${budget.date.day}/${budget.date.month}/${budget.date.year}",
+                                                      style: TextStyle(
+                                                          color: budget.jenis ==
+                                                                  "Pengeluaran"
+                                                              ? Colors.red
+                                                              : Colors.green),
+                                                    ),
+                                                  ]),
                                               const Spacer(),
                                               Row(
                                                 mainAxisAlignment:
