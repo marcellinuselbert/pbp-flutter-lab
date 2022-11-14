@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:counter_7/drawer.dart';
+import 'package:counter_7/budget.dart';
 
 class MyFormPage extends StatefulWidget {
   const MyFormPage({super.key});
@@ -10,236 +11,172 @@ class MyFormPage extends StatefulWidget {
 
 class _MyFormPageState extends State<MyFormPage> {
   final _formKey = GlobalKey<FormState>();
-  String _namaLengkap = "";
-  bool jenjangSarjana = false;
-  bool jenjangDiploma = false;
-  bool jenjangMagister = false;
-  bool jenjangDoktor = false;
-  double umur = 0;
-  String kelasPBP = 'A';
-  List<String> listKelasPBP = ['A', 'B', 'C', 'D', 'E', 'F', 'KI'];
-  bool _nilaiSwitch = false;
+  String _judul = "";
+  int? _nominal = 0;
+  String? _jenis;
+  final _controllerJudul = TextEditingController();
+  final _controllerNominal = TextEditingController();
+
+  void clearText() {
+    _controllerJudul.clear();
+    _controllerNominal.clear();
+    _jenis = null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Form'),
+        title: const Text('Form Budget'),
       ),
       drawer: buildDrawer(context),
       body: Form(
           key: _formKey,
-          child: SingleChildScrollView(
-              child: Container(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      Padding(
-                        // Menggunakan padding sebesar 8 pixels
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            hintText: "Contoh: Pak Dengklek",
-                            labelText: "Nama Lengkap",
-                            // Menambahkan icon agar lebih intuitif
-                            icon: const Icon(Icons.people),
-                            // Menambahkan circular border agar lebih rapi
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                          ),
-                          // Menambahkan behavior saat nama diketik
-                          onChanged: (String? value) {
-                            setState(() {
-                              _namaLengkap = value!;
-                            });
-                          },
-                          // Menambahkan behavior saat data disimpan
-                          onSaved: (String? value) {
-                            setState(() {
-                              _namaLengkap = value!;
-                            });
-                          },
-                          // Validator sebagai validasi form
-                          validator: (String? value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Nama lengkap tidak boleh kosong!';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+          child: Container(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Padding(
+                      // Menggunakan padding sebesar 8 pixel
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const ListTile(
-                              leading: Icon(Icons.school),
-                              title: Text("Jenjang"),
-                            ),
-                            CheckboxListTile(
-                              title: const Text('Sarjana'),
-                              value: jenjangSarjana,
-                              onChanged: (bool? value) {
+                            TextFormField(
+                              decoration: InputDecoration(
+                                hintText: "Contoh: Sate Pacil",
+                                labelText: "Judul",
+
+                                // Menambahkan circular border agar lebih rapi
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              ),
+                              controller: _controllerJudul,
+                              // Menambahkan behavior saat nama diketik
+                              onChanged: (String? value) {
                                 setState(() {
-                                  jenjangSarjana = value!;
-                                  if (value) {
-                                    jenjangMagister =
-                                        jenjangDiploma = jenjangDoktor = false;
-                                  }
+                                  _judul = value!;
                                 });
                               },
-                            ),
-                            CheckboxListTile(
-                              title: const Text('Diploma'),
-                              value: jenjangDiploma,
-                              onChanged: (bool? value) {
+                              // Menambahkan behavior saat data disimpan
+                              onSaved: (String? value) {
                                 setState(() {
-                                  jenjangDiploma = value!;
-                                  if (value) {
-                                    jenjangMagister =
-                                        jenjangSarjana = jenjangDoktor = false;
-                                  }
+                                  _judul = value!;
                                 });
                               },
+                              // Validator sebagai validasi form
+                              validator: (String? value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Judul tidak boleh kosong!';
+                                }
+                                return null;
+                              },
                             ),
-                            CheckboxListTile(
-                              title: const Text('Magister'),
-                              value: jenjangMagister,
-                              onChanged: (bool? value) {
+                            const SizedBox(
+                              height: 10, // <-- SEE HERE
+                            ),
+                            TextFormField(
+                              controller: _controllerNominal,
+                              decoration: InputDecoration(
+                                hintText: "Contoh: 20000",
+                                labelText: "Nominal",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              ),
+                              onChanged: (String? value) {
                                 setState(() {
-                                  jenjangMagister = value!;
-                                  if (value) {
-                                    jenjangDiploma =
-                                        jenjangSarjana = jenjangDoktor = false;
-                                  }
+                                  _nominal = int.tryParse(value!);
                                 });
                               },
-                            ),
-                            CheckboxListTile(
-                              title: const Text('Doktor'),
-                              value: jenjangDoktor,
-                              onChanged: (bool? value) {
+                              // Menambahkan behavior saat data disimpan
+                              onSaved: (String? value) {
                                 setState(() {
-                                  jenjangDoktor = value!;
-                                  if (value) {
-                                    jenjangMagister =
-                                        jenjangSarjana = jenjangDiploma = false;
-                                  }
+                                  _nominal = int.parse(value!);
                                 });
                               },
-                            ),
-                          ],
-                        ),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.co_present),
-                        title: Row(
-                          children: [
-                            Text('Umur: ${umur.round()}'),
-                          ],
-                        ),
-                        subtitle: Slider(
-                          value: umur,
-                          max: 100,
-                          divisions: 100,
-                          label: umur.round().toString(),
-                          onChanged: (double value) {
-                            setState(() {
-                              umur = value;
-                            });
-                          },
-                        ),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.class_),
-                        title: const Text(
-                          'Kelas PBP',
-                        ),
-                        trailing: DropdownButton(
-                          value: kelasPBP,
-                          icon: const Icon(Icons.keyboard_arrow_down),
-                          items: listKelasPBP.map((String items) {
-                            return DropdownMenuItem(
-                              value: items,
-                              child: Text(items),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              kelasPBP = newValue!;
-                            });
-                          },
-                        ),
-                      ),
-                      SwitchListTile(
-                        title: const Text('Practice Mode'),
-                        value: _nilaiSwitch,
-                        onChanged: (bool value) {
-                          setState(() {
-                            _nilaiSwitch = value;
-                          });
-                        },
-                        secondary: const Icon(Icons.run_circle_outlined),
-                      ),
-                      TextButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.blue),
-                        ),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Dialog(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  elevation: 15,
-                                  child: Container(
-                                    child: ListView(
-                                      padding: const EdgeInsets.only(
-                                          top: 20, bottom: 20),
-                                      shrinkWrap: true,
-                                      children: <Widget>[
-                                        const Center(
-                                            child: Text('Informasi Data')),
-                                        const SizedBox(height: 20),
-                                        Center(
-                                          child: Column(children: [
-                                            Text('Nama:  $_namaLengkap'),
-                                            // Text('Jenjang:  $_'),
-                                            Text('Umur:  $umur'),
-                                            Text('Kelas:  $kelasPBP'),
-                                            Text('Practice:  $_nilaiSwitch')
-                                          ]),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text('Kembali'),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
+                              // Validator sebagai validasi form
+                              validator: (String? value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Nominal tidak boleh kosong!';
+                                } else if (_nominal == null) {
+                                  return 'Nominal harus angka!';
+                                }
+                                return null;
                               },
-                            );
-                          }
-                        },
-                        child: const Text(
-                          "Simpan",
-                          style: TextStyle(color: Colors.white),
-                        ),
+                            )
+                          ])),
+                  const SizedBox(
+                    height: 10, // <-- SEE HERE
+                  ),
+                  SizedBox(
+                    width: 120,
+                    child: DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        // isCollapsed: true,
+                        enabledBorder: InputBorder.none,
                       ),
-                    ],
-                  )))),
+                      hint: const Text("Pilih Jenis"),
+                      value: _jenis,
+                      validator: (value) =>
+                          value == null ? "Pilih Jenis" : null,
+                      items: const <DropdownMenuItem<String>>[
+                        DropdownMenuItem<String>(
+                          value: 'Pengeluaran',
+                          child: Text('Pengeluaran'),
+                        ),
+                        DropdownMenuItem<String>(
+                          value: 'Pemasukan',
+                          child: Text('Pemasukan'),
+                        ),
+                      ],
+                      onChanged: (String? value) {
+                        setState(() {
+                          _jenis = value!;
+                        });
+                      },
+                    ), // <-- SEE HERE
+                  ),
+
+                  // kebawahin button
+                  const Spacer(),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                      ),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          ListBudget.data
+                              .add(Budget(_judul, _nominal, _jenis!));
+                          _showToast(context);
+                          clearText();
+                        }
+                      },
+                      child: const Text(
+                        "Simpan",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  )
+                ],
+              ))),
+    );
+  }
+
+  void _showToast(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: const Text('Budget berhasil ditambahkan!'),
+        action: SnackBarAction(
+            label: 'Close',
+            onPressed: () {
+              scaffold.hideCurrentSnackBar;
+            }),
+      ),
     );
   }
 }

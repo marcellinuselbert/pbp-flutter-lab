@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:counter_7/main.dart';
 import 'package:counter_7/form.dart';
+import 'package:counter_7/show_budget.dart';
 
 Drawer buildDrawer(BuildContext context) {
   return Drawer(
@@ -31,7 +32,7 @@ Drawer buildDrawer(BuildContext context) {
           onTap: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const MyFormPage()),
+              MaterialPageRoute(builder: (context) => const ShowBudget()),
             );
           },
         ),
