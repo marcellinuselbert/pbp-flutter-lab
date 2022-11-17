@@ -14,7 +14,7 @@ class _ShowBudgetState extends State<ShowBudget> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Form Budget'),
+          title: const Text('Data Budget'),
         ),
         drawer: buildDrawer(context),
         body: SingleChildScrollView(
