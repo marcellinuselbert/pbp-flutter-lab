@@ -96,10 +96,11 @@ class MyWatchListDetail extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text(
+                    Flexible(
+                        child: Text(
                       myWatchList.review,
                       style: const TextStyle(fontSize: 18),
-                    )
+                    ))
                   ],
                 )
               ],

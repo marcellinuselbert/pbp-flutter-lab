@@ -57,6 +57,15 @@ class _MyWatchListState extends State<MyWatchList> {
                             ],
                           ),
                           child: Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      10), // if you need this
+                                  side: BorderSide(
+                                    color: snapshot.data![index].watched
+                                        ? Colors.green
+                                        : Colors.red,
+                                    width: 2,
+                                  )),
                               child: Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 2, vertical: 8),
@@ -67,6 +76,15 @@ class _MyWatchListState extends State<MyWatchList> {
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.bold,
                                       ),
+                                    ),
+                                    trailing: Checkbox(
+                                      value: snapshot.data![index].watched,
+                                      onChanged: (bool? newValue) {
+                                        setState(() {
+                                          snapshot.data![index].watched =
+                                              !snapshot.data![index].watched;
+                                        });
+                                      },
                                     ),
                                     onTap: () {
                                       Navigator.push(
